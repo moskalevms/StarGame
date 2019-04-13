@@ -13,7 +13,8 @@ public class MenuScreen extends BaseScreen {
     private Vector2 touch; //вектор положения указателя мыши
     private Vector2 pos; //вектор положения картинки
     private Vector2 v;
-    private Vector2 newPos;
+    private Vector2 buf;
+
 
     @Override
     public void show() {
@@ -21,25 +22,23 @@ public class MenuScreen extends BaseScreen {
         touch = new Vector2();
         pos = new Vector2();
         v = new Vector2(0.2f,0.5f);
+        buf = new Vector2();
         img = new Texture("badlogic.jpg");
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        buf.set(touch);
+        if (buf.sub(pos).len() > 0.5f){
         pos.add(v);
+        }else{
+            pos.set(touch);
+        }
+
         batch.begin();
 		batch.draw(img, pos.x, pos.y);
-        newPos = pos.cpy().sub(touch); //нашел вектор между курсором и картинкой
-        System.out.println("newPos.x = " + newPos.x + "newPos.y = " + newPos.y);
-        newPos.len();
-        System.out.println("newPos.len() = " + newPos.len()); //нашел длину вектора между курсором и картинкой
-        newPos.nor();
-        //имею расстояние между курсором и картинкой и направление от курсора к картинке
-        //теперь нужно переместить картинку к кусрору.
-        //то есть чтобы вектор pos двигался со скоростью v в коoрдинаты touch на вычисленное растояние по найденному направлению
-        pos.set(newPos);
-        batch.end();
+		batch.end();
     }
 
     @Override
@@ -52,6 +51,8 @@ public class MenuScreen extends BaseScreen {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //переворачиваем ось Y и получаем вектор touch с акутальными значениями
         touch.set(screenX, Gdx.graphics.getHeight() - screenY);
+        //расстояние между курсором и картикой. setLength - чтобы картинка двигалась плавно
+        v.set(touch.cpy().sub(pos)).setLength(0.5f);
         System.out.println("touch.x = " + touch.x + " touch.y = " + touch.y);
         return false;
     }
