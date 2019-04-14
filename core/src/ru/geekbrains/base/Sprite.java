@@ -14,7 +14,7 @@ public class Sprite extends Rect {
     protected int frame;
 
     public Sprite(TextureRegion region) {
-        this.regions = new TextureRegion[1];
+        regions = new TextureRegion[1];
         regions[0] = region;
     }
 
@@ -51,11 +51,9 @@ public class Sprite extends Rect {
         return false;
     }
 
-
     public float getAngle() {
         return angle;
     }
-
 
     public void setAngle(float angle) {
         this.angle = angle;

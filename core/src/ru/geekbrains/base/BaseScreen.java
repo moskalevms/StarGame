@@ -17,12 +17,14 @@ public abstract class BaseScreen implements Screen, InputProcessor {
     protected SpriteBatch batch;
     protected Rect worldBounds; //границы игрового мира
     private Rect screenBounds; //система кооринат в пикселях
-    private Rect glBouunds; //окно GL 2fx2f
+    private Rect glBounds; //окно GL 2fx2f
 
     private Matrix4 worldToGl;
     private Matrix3 screenToWorld;
 
-    private Vector2 touch; //вектор положения указателя мыши
+    private Vector2 touch; //вектор положения курсора
+    private Vector2 pos; //вектор положения лого
+
 
 
     @Override
@@ -32,16 +34,20 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         worldBounds = new Rect();
         screenBounds = new Rect();
-        glBouunds = new Rect(0,0,1f,1f);
+        glBounds = new Rect(0,0,1f,1f);
         worldToGl = new Matrix4();
         screenToWorld = new Matrix3();
         touch = new Vector2();
+        pos = new Vector2();
+
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //вектор положения лого в систему координат GL
+        pos.set(screenBounds.getHeight(), screenBounds.getWidth()).mul(screenToWorld);
     }
 
     @Override
@@ -55,7 +61,7 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         worldBounds.setHeight(1f);
         worldBounds.setWidth(1f*aspect);
 
-        MatrixUtils.calcTransitionMatrix(worldToGl,worldBounds, glBouunds); //проецируемся из worldBounds в glBounds
+        MatrixUtils.calcTransitionMatrix(worldToGl,worldBounds, glBounds); //проецируемся из worldBounds в glBounds
         batch.setProjectionMatrix(worldToGl);
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
         resize(worldBounds);
