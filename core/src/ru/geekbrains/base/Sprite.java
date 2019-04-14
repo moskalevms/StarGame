@@ -5,17 +5,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.math.Rect;
-
+//для PR
 public class Sprite extends Rect {
 
     protected float angle; //угол вращения объекта
-    protected float scale = 1f;
+    protected float scale = 1f; //для увеличения и уменьшения размеров объекта
     protected TextureRegion[] regions;
-    protected int frame;
+    protected int frame; //текущий кадр
 
     public Sprite(TextureRegion region) {
         regions = new TextureRegion[1];
-        regions[0] = region;
+        regions[0] = region; //текстура для спрайта
     }
 
     public void setHeightProportion(float height){
