@@ -1,6 +1,7 @@
 package ru.geekbrains.sprite;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -14,8 +15,8 @@ public class Ship extends Sprite {
     private Vector2 bufV;
     private Vector2 buf;
 
-    public Ship(TextureRegion region) {
-        super(region);
+    public Ship(TextureAtlas atlas) {
+        super(atlas.findRegion("main_ship"));
         setHeightProportion(0.3f);
         touch = new Vector2();
         v = new Vector2(0.2f,0.5f);
