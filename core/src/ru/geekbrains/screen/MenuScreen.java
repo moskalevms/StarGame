@@ -20,7 +20,7 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        bg = new Texture("space.png");
+        bg = new Texture("textures/space.png");
         background = new Background(new TextureRegion(bg));
 
         sh = new Texture("badlogic.jpg");
@@ -29,21 +29,30 @@ public class MenuScreen extends BaseScreen {
     }
 
     @Override
-    public void render(float delta) {
-        super.render(delta);
-        batch.begin();
-        background.draw(batch);
-        //почему не отрисовывается лого?
-        ship.draw(batch);
-        ship.update(0.5f);
-        batch.end();
-    }
-
-    @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
         ship.resize(worldBounds);
+    }
+
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        update(delta);
+        draw();
+    }
+
+    private void update(float delta){
+        ship.update(delta);
+    }
+
+    private void draw(){
+        batch.begin();
+        background.draw(batch);
+        ship.draw(batch);
+        batch.end();
+
     }
 
     @Override
@@ -55,6 +64,8 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
+        ship.touchDown(touch,pointer);
         return false;
     }
+
 }

@@ -5,27 +5,40 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.Sprite;
+import ru.geekbrains.math.Rect;
 
 public class Ship extends Sprite {
 
-    private Vector2 touch = new Vector2(); //вектор положения указателя мыши
-    private Vector2 pos  = new Vector2(); //вектор положения картинки
-    private Vector2 v = new Vector2(0.2f,0.5f) ;
-    private Vector2 buf = new Vector2();
+    private Vector2 touch; //вектор положения указателя мыши
+    private Vector2 v;
+    private Vector2 bufV;
+    private Vector2 buf;
 
     public Ship(TextureRegion region) {
         super(region);
+        setHeightProportion(0.3f);
+        touch = new Vector2();
+        v = new Vector2(0.2f,0.5f);
+        bufV = new Vector2();
+        buf = new Vector2();
+    }
+
+    @Override
+    public void resize(Rect worldBounds) {
+        super.resize(worldBounds);
+        setHeightProportion(0.3f);
     }
 
     @Override
     public void update(float delta){
         buf.set(touch);
-        if(buf.sub(pos).len() > delta) {
-            pos.add(v);
-        }else{
+        bufV.set(v);
+        bufV.scl(delta);
+        if(buf.sub(pos).len() < bufV.len()) {
             pos.set(touch);
+        }else{
+            pos.mulAdd(v, delta);
         }
-
     }
 
     @Override
@@ -35,6 +48,7 @@ public class Ship extends Sprite {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
+        this.touch = touch;
         v.set(touch.cpy().sub(pos)).setLength(0.5f);
         return super.touchDown(touch, pointer);
     }
