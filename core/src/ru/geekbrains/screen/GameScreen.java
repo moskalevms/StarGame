@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.base.BaseScreen;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprite.Background;
+import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.Star;
 
 public class GameScreen extends BaseScreen {
@@ -17,9 +18,10 @@ public class GameScreen extends BaseScreen {
     private Texture bg;
     private Background background;
 
-
     private TextureAtlas atlas;
     private Star starList[];
+
+    private MainShip mainShip;
 
     public GameScreen(Game game) {
         this.game = game;
@@ -32,10 +34,11 @@ public class GameScreen extends BaseScreen {
         background = new Background(new TextureRegion(bg));
 
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
-        starList = new Star[256];
+        starList = new Star[64];
         for(int i = 0; i < starList.length; i++){
             starList[i] = new Star(atlas);
         }
+        mainShip = new MainShip(atlas);
 
     }
 
@@ -43,10 +46,10 @@ public class GameScreen extends BaseScreen {
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
-        ship.resize(worldBounds);
         for (Star star : starList){
             star.resize(worldBounds);
         }
+        mainShip.resize(worldBounds);
     }
 
 
@@ -58,19 +61,19 @@ public class GameScreen extends BaseScreen {
     }
 
     private void update(float delta){
-        ship.update(delta);
         for (Star star : starList){
             star.update(delta);
         }
+        mainShip.update(delta);
     }
 
     private void draw(){
         batch.begin();
         background.draw(batch);
-        // ship.draw(batch);
         for (Star star : starList){
             star.draw(batch);
         }
+        mainShip.draw(batch);
         batch.end();
 
     }
@@ -79,18 +82,31 @@ public class GameScreen extends BaseScreen {
     public void dispose() {
         super.dispose();
         bg.dispose();
-        sh.dispose();
         atlas.dispose();
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        ship.touchDown(touch,pointer);
+        mainShip.touchDown(touch,pointer);
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
+        mainShip.touchUp(touch,pointer);
+        return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        mainShip.keyDown(keycode);
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        mainShip.keyUp(keycode);
         return false;
     }
 }
+

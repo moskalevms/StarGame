@@ -12,7 +12,6 @@ import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.ButtonExit;
 import ru.geekbrains.sprite.ButtonPlay;
-import ru.geekbrains.sprite.Ship;
 import ru.geekbrains.sprite.Star;
 
 public class MenuScreen extends BaseScreen {
