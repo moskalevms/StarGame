@@ -9,10 +9,12 @@ import ru.geekbrains.utils.Regions;
 
 public class Sprite extends Rect {
 
-    protected float angle; //угол вращения объекта
+    protected float angle;
     protected float scale = 1f;
     protected TextureRegion[] regions;
     protected int frame;
+
+    private boolean isDestroyed;
 
     public Sprite(TextureRegion region) {
         regions = new TextureRegion[1];
@@ -20,27 +22,30 @@ public class Sprite extends Rect {
     }
 
     public Sprite(TextureRegion region, int rows, int cols, int frames) {
-       this.regions = Regions.split(region, rows, cols, frames);
+        this.regions = Regions.split(region, rows, cols, frames);
     }
 
-    public void setHeightProportion(float height){
+    public Sprite() {
+    }
+
+    public void setHeightProportion(float height) {
         setHeight(height);
-        float aspect = regions[frame].getRegionWidth()/(float) regions[frame].getRegionHeight();
+        float aspect = regions[frame].getRegionWidth() / (float) regions[frame].getRegionHeight();
         setWidth(height * aspect);
     }
 
-    public void resize(Rect worldBounds){
+    public void resize(Rect worldBounds) {
 
     }
 
-    public void update(float delta){
+    public void update(float delta) {
 
     }
 
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch) {
         batch.draw(
                 regions[frame],
-                getLeft(), getBottom(), //точка отрисовки
+                getLeft(), getBottom(),
                 halfWidth, halfHeight,
                 getWidth(), getHeight(),
                 scale, scale,
@@ -70,5 +75,17 @@ public class Sprite extends Rect {
 
     public void setScale(float scale) {
         this.scale = scale;
+    }
+
+    public void destroy() {
+        isDestroyed = true;
+    }
+
+    public void flushDestroy() {
+        isDestroyed = false;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
     }
 }
