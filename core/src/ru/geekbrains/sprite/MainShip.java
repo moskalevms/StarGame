@@ -15,6 +15,8 @@ public class MainShip extends Sprite {
 
     private static final int INVALID_POINTER = -1;
 
+    private Sound shootSound;
+
     private Rect worldBounds;
 
     private Vector2 v = new Vector2();
@@ -33,13 +35,11 @@ public class MainShip extends Sprite {
     private float reloadInterval = 0.2f;
     private float reloadTimer;
 
-    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
-
-
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound shootSound) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
         this.bulletRegion = atlas.findRegion("bulletMainShip");
+        this.shootSound = shootSound;
         setHeightProportion(0.15f);
     }
 
@@ -157,7 +157,7 @@ public class MainShip extends Sprite {
     public void shoot() {
         Bullet bullet = bulletPool.obtain();
         bullet.set(this, bulletRegion, pos, bulletV, 0.015f, worldBounds, 1);
-        sound.play(0.02f); //как правильно сделать dispose?
+        shootSound.play();
 
     }
 
@@ -172,12 +172,5 @@ public class MainShip extends Sprite {
     private void stop() {
         v.setZero();
     }
-
-    private void dispose(Sound sound){
-        this.sound = sound;
-        sound.dispose();
-    }
-
-
 
 }
