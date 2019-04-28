@@ -74,7 +74,6 @@ public class MenuScreen extends BaseScreen {
     private void draw(){
         batch.begin();
         background.draw(batch);
-        // ship.draw(batch);
         for (Star star : starList){
             star.draw(batch);
         }

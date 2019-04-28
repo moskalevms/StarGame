@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.math.Rnd;
 import ru.geekbrains.pool.EnemyPool;
-import ru.geekbrains.sprite.EnemyShip;
+import ru.geekbrains.sprite.Enemy;
 
 public class EnemyGenerator {
 
@@ -65,7 +65,7 @@ public class EnemyGenerator {
         generateTimer += delta;
         if (generateTimer >= generateInterval) {
             generateTimer = 0f;
-            EnemyShip enemy = enemyPool.obtain();
+            Enemy enemy = enemyPool.obtain();
             float type = (float) Math.random();
             if (type < 0.5f) {
                 enemy.set(
