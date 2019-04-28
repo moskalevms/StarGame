@@ -8,11 +8,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.List;
+
 import ru.geekbrains.base.BaseScreen;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.EnemyPool;
 import ru.geekbrains.sprite.Background;
+import ru.geekbrains.sprite.Bullet;
+import ru.geekbrains.sprite.EnemyShip;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.Star;
 import ru.geekbrains.utils.EnemyGenerator;
@@ -77,6 +81,32 @@ public class GameScreen extends BaseScreen {
     }
 
     private void checkCollisions() {
+        List<EnemyShip> enemyList = enemyPool.getActiveObjects();
+        for(EnemyShip enemyShip : enemyList){
+            if (enemyShip.isDestroyed()){
+                continue;
+            }
+            float minDist = enemyShip.getHalfWidth() + mainShip.getHalfWidth();
+            if(enemyShip.pos.dst(mainShip.pos)< minDist){
+                enemyShip.destroy();
+                mainShip.destroy();
+            }
+        }
+        List<Bullet> bulletList = bulletPool.getActiveObjects();
+        for (EnemyShip enemyShip : enemyList ){
+            if(enemyShip.isDestroyed()){
+                continue;
+            }
+            for(Bullet bullet : bulletList){
+                if(bullet.getOwner() != mainShip || bullet.isDestroyed()){
+                    continue;
+                }
+                if(!bullet.isOutside(enemyShip)){
+                    enemyShip.damage(bullet.getDamage());
+                    bullet.destroy();
+                }
+            }
+        }
 
     }
 
