@@ -1,37 +1,26 @@
 package ru.geekbrains.sprite;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import ru.geekbrains.base.ScaledTouchUpButton;
-import ru.geekbrains.math.Rect;
 import ru.geekbrains.screen.GameScreen;
 
 public class ButtonNewGame extends ScaledTouchUpButton {
 
-    private Game game;
+    private static final float HEIGHT = 0.05f;
+    private static final float TOP = -0.012f;
 
-    public ButtonNewGame(TextureAtlas atlas, Game game) {
+    private GameScreen screen;
+
+    public ButtonNewGame(TextureAtlas atlas, GameScreen screen) {
         super(atlas.findRegion("button_new_game"));
-        this.game = game;
-        setHeightProportion(0.05f);
-
+        setHeightProportion(HEIGHT);
+        setTop(TOP);
+        this.screen = screen;
     }
 
     @Override
-    public void resize(Rect worldBounds) {
-        super.resize(worldBounds);
-        setBottom(worldBounds.getTop() - 0.2f);
-        setLeft(worldBounds.getLeft() + 0.13f);
+    protected void action() {
+        screen.reset();
     }
-
-    @Override
-    public void action() {
-        //если так сделать, то при нажатии на кнопку возникает NullPointerEx, почему так?
-        //game.setScreen(new GameScreen());
-
-        GameScreen.newGame();
-    }
-
 }
